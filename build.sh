@@ -1,0 +1,1 @@
+gcc main.c ./player/player.c -o main && sleep 2
