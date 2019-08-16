@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../data/jake/player.c"
+#include "../data/player.c"
 #include "player.h"
 
 int daddy(){
