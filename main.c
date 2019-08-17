@@ -9,7 +9,7 @@
 #define WELCOME "~~~~~~~~~~~~~~~~~~~~~~~~~~~~+*+~~~+*$#$*+~~~+*+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                           Welcome to C Warrior!\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~+*+~~~+*$#$*+~~~+*+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
 #define ENTER_NAME "? Enter a name for your warrior: "
 #define ENTER_ID "? Enter your Id: "
-#define SELECT_TOWER "? Choose a tower: (Use arrow keys)"
+#define SELECT_TOWER "? Choose a tower: "
 #define INIT_PLAYER_FILE "void player_turn()\n{\n    // your code goes here\n}\n"
 #define CHOOSE_PROFILE "? Choose a profile: "
 #define GEN_LEVEL "Level has been generated. See data/README.md for instructions."
@@ -28,7 +28,6 @@ void createProfile();
 void printProfile();
 void generateLevel();
 void copyReadMe(int);
-int runLevel();
 
 int main()
 {
@@ -54,12 +53,6 @@ int main()
         printf("%s", "corrupted files !\nget files from : https://github.com/3pic/C-Warrior");
         return 0;
     }
-    // int status = runLevel();
-    // if(status){
-    //     generateLevel();
-    // }else{
-
-    // }
 
     return 0;
 }
@@ -71,13 +64,10 @@ void createProfile()
     printf("%s", ENTER_ID);
     scanf("%d", &myProfile.id);
     printf("%s", SELECT_TOWER);
+    printf("%s", "'Baby-Steps' has been set as default\n");
     // scanf("%s",myProfile.tower);
     strcpy(myProfile.tower, "baby-steps");
-    myProfile.level = 1;
-    FILE *fptr;
-    fptr = fopen("./data/.profile", "wb");
-    fwrite(&myProfile, sizeof(struct Profile), 1, fptr);
-    generateLevel(1);
+    generateLevel(1, 0);
 }
 
 void readProfile(FILE *fptr)
@@ -94,7 +84,7 @@ void readProfile(FILE *fptr)
     switch (choice)
     {
     case 1:
-        puts("profile selected");
+        run(myProfile.level - 1);
         break;
     case 2:
         createProfile();
@@ -110,7 +100,7 @@ void printProfile()
     printf("%d - ", myProfile.id);
     printf("%s - ", myProfile.tower);
     printf("level %d - ", myProfile.level);
-    printf("score: %d", myProfile.level);
+    printf("score: %d", myProfile.score);
 }
 
 void copyReadMe(int level)
@@ -122,9 +112,8 @@ void copyReadMe(int level)
     sprintf(lvl, "%d", level);
     strcpy(loc, "./towers/");
     strcat(loc, myProfile.tower);
-    strcat(loc, "/");
-    strcat(loc, lvl);
     strcat(loc, "/rm");
+    strcat(loc, lvl);
     fptr1 = fopen(loc, "r");
     if (fptr1 == NULL)
     {
@@ -149,7 +138,7 @@ void copyReadMe(int level)
     fclose(fptr2);
 }
 
-void generateLevel(int level)
+void generateLevel(int level, int score)
 {
     FILE *playerFile;
     playerFile = fopen("./data/player.c", "r");
@@ -161,4 +150,11 @@ void generateLevel(int level)
         fclose(newFile);
     }
     fclose(playerFile);
+    myProfile.level = level;
+    myProfile.score = score;
+    FILE *fptr;
+    fptr = fopen("./data/.profile", "wb");
+    fwrite(&myProfile, sizeof(struct Profile), 1, fptr);
+    copyReadMe(level);
+    printf("%s\n", GEN_LEVEL);
 }
