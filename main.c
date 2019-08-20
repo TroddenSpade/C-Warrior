@@ -10,9 +10,9 @@
 #define ENTER_NAME "? Enter a name for your warrior: "
 #define ENTER_ID "? Enter your Id: "
 #define SELECT_TOWER "? Choose a tower: "
-#define INIT_PLAYER_FILE "void player_turn()\n{\n    // your code goes here\n}\n"
+#define INIT_PLAYER_FILE "void playTurn()\n{\n    // your code goes here\n}\n"
 #define CHOOSE_PROFILE "? Choose a profile: "
-#define GEN_LEVEL "Level has been generated. See data/README.md for instructions."
+#define GEN_LEVEL "has been generated. See data/README.md for instructions."
 
 struct Profile
 {
@@ -84,7 +84,7 @@ void readProfile(FILE *fptr)
     switch (choice)
     {
     case 1:
-        run(myProfile.level - 1);
+        play(myProfile.level - 1);
         break;
     case 2:
         createProfile();
@@ -141,11 +141,11 @@ void copyReadMe(int level)
 void generateLevel(int level, int score)
 {
     FILE *playerFile;
-    playerFile = fopen("./data/player.c", "r");
+    playerFile = fopen("./data/Player.c", "r");
     if (playerFile == NULL)
     {
         FILE *newFile;
-        newFile = fopen("./data/player.c", "w");
+        newFile = fopen("./data/Player.c", "w");
         fprintf(newFile, "%s", INIT_PLAYER_FILE);
         fclose(newFile);
     }
@@ -156,5 +156,5 @@ void generateLevel(int level, int score)
     fptr = fopen("./data/.profile", "wb");
     fwrite(&myProfile, sizeof(struct Profile), 1, fptr);
     copyReadMe(level);
-    printf("%s\n", GEN_LEVEL);
+    printf("Level %d %s\n", level, GEN_LEVEL);
 }
