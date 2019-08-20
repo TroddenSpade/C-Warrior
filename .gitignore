@@ -1,2 +1,4 @@
 *.test.c
 *.exe
+data/
+data/player.c
