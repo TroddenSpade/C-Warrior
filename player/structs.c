@@ -1,4 +1,10 @@
-struct Unit
+enum Face
+{
+    EAST,
+    WEST
+};
+
+typedef struct Object
 {
     int health;
     int maxHealth;
@@ -9,9 +15,13 @@ struct Unit
     int bound;
     int locX;
     int locY;
-};
+    void (*run)(struct Object *);
+    enum Face face;
+} Object;
 
-struct Level
+Object warrior, wall, space, stairs;
+
+typedef struct Level
 {
     int timeBonus;
     int aceScore;
@@ -22,6 +32,6 @@ struct Level
     int maxHealth;
     int startX;
     int startY;
-    int unitsLength;
-    struct Unit thisLevelsUnits[];
-};
+    int objsLength;
+    Object *thisLevelsObjs[];
+} Level;
