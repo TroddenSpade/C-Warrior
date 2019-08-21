@@ -5,7 +5,7 @@
 #include "../main.h"
 #include "structs.c"
 
-#define SLEEP_TIME 2
+#define SLEEP_TIME 1
 #define MAX_RUN_TIME 100
 #define Warrior &warrior
 #define LVL_HEADER "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ LEVEL ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -20,13 +20,13 @@ int timeBonus;
 int aceScore;
 int score = 0;
 struct Object *field[10][20];
+int objectStat[100];
 
 #include "methods.c"
 #include "../towers/baby-steps/index.c"
 #include "../data/Player.c"
 
 #ifdef _WIN32
-#include <windows.h>
 #include <fcntl.h>
 #include <io.h>
 #define HEART L"\u2665"
@@ -50,26 +50,25 @@ struct Object *field[10][20];
 #define _WIN32 0
 #endif
 
-void setupField(int level);
+void setupField();
 void setupObjects();
-void draw(int level);
-void show(int level);
+void draw();
+void show();
 void check(int level);
-void objectsRun(int level);
+void objectsRun();
 void resetCall();
-void cleaner(int level);
+void cleaner();
 
 int play(int level)
 {
-    objConstructor();
-    levelConstructor();
+    initialLevels();
+    functions[level]();
     setupObjects();
-    setupField(level);
+    setupField();
     puts(LVL_HEADER);
 
-    system("color 0a");
     printf("%s000%s\n", TURN_L, TURN_R);
-    draw(level);
+    draw();
     sleep(SLEEP_TIME);
     int counter = 1;
     while (isLevelOn)
@@ -82,39 +81,40 @@ int play(int level)
         strcat(turn, step);
         strcat(turn, TURN_R);
         puts(turn);
-        cleaner(level);
+
         playTurn();
-        objectsRun(level);
-        draw(level);
+        objectsRun();
+        cleaner();
+        draw();
         check(level);
         resetCall();
         sleep(SLEEP_TIME);
     }
 }
 
-void draw(int level)
+void draw()
 {
     if (__APPLE__)
     {
         printf("%s %d\n", HEART, warrior.health);
         printf("%s %d\n", SCORE, score);
         printf("%s", UP_LEFT);
-        for (int j = 0; j < levels[level].width; j++)
+        for (int j = 0; j < levelStruct.width; j++)
         {
             printf("%s", VER);
         }
         printf("%s\n", UP_RIGHT);
-        for (int i = 0; i < levels[level].height; i++)
+        for (int i = 0; i < levelStruct.height; i++)
         {
             printf("%s", HOR);
-            for (int j = 0; j < levels[level].width; j++)
+            for (int j = 0; j < levelStruct.width; j++)
             {
                 printf("%c", field[i + 1][j + 1]->character);
             }
             printf("%s\n", HOR);
         }
         printf("%s", DOWN_LEFT);
-        for (int j = 0; j < levels[level].width; j++)
+        for (int j = 0; j < levelStruct.width; j++)
         {
             printf("%s", VER);
         }
@@ -135,7 +135,7 @@ void draw(int level)
         _setmode(_fileno(stdout), 0x00020000);
         wprintf(UP_LEFT);
         _setmode(_fileno(stdout), 0x4000);
-        for (int j = 0; j < levels[level].width; j++)
+        for (int j = 0; j < levelStruct.width; j++)
         {
             _setmode(_fileno(stdout), 0x00020000);
             wprintf(VER);
@@ -147,12 +147,12 @@ void draw(int level)
         _setmode(_fileno(stdout), 0x4000);
         puts("");
 
-        for (int i = 0; i < levels[level].height; i++)
+        for (int i = 0; i < levelStruct.height; i++)
         {
             _setmode(_fileno(stdout), 0x00020000);
             wprintf(HOR);
             _setmode(_fileno(stdout), 0x4000);
-            for (int j = 0; j < levels[level].width; j++)
+            for (int j = 0; j < levelStruct.width; j++)
             {
                 printf("%c", field[i + 1][j + 1]->character);
             }
@@ -165,7 +165,7 @@ void draw(int level)
         _setmode(_fileno(stdout), 0x00020000);
         wprintf(DOWN_LEFT);
         _setmode(_fileno(stdout), 0x4000);
-        for (int j = 0; j < levels[level].width; j++)
+        for (int j = 0; j < levelStruct.width; j++)
         {
             _setmode(_fileno(stdout), 0x00020000);
             wprintf(VER);
@@ -178,45 +178,46 @@ void draw(int level)
     }
 }
 
-void setupField(int level)
+void setupField()
 {
 
-    for (int i = 0; i <= levels[level].width + 1; i++)
+    for (int i = 0; i <= levelStruct.width + 1; i++)
     {
         field[0][i] = &wall;
     }
 
-    for (int i = 1; i <= levels[level].height; i++)
+    for (int i = 1; i <= levelStruct.height; i++)
     {
         field[i][0] = &wall;
 
-        for (int j = 1; j <= levels[level].width; j++)
+        for (int j = 1; j <= levelStruct.width; j++)
         {
             field[i][j] = &space;
         }
-        field[i][levels[level].width + 1] = &wall;
+        field[i][levelStruct.width + 1] = &wall;
     }
 
-    for (int i = 0; i <= levels[level].width + 1; i++)
+    for (int i = 0; i <= levelStruct.width + 1; i++)
     {
-        field[levels[level].height + 1][i] = &wall;
+        field[levelStruct.height + 1][i] = &wall;
     }
 
-    field[levels[level].stairY][levels[level].stairX] = &stairs;
+    field[levelStruct.stairY][levelStruct.stairX] = &stairs;
 
-    for (int i = 0; i < levels[level].objsLength; i++)
+    for (int i = 0; i < levelStruct.objsLength; i++)
     {
-        field[levels[level].thisLevelsObjs[i]->locY][levels[level].thisLevelsObjs[i]->locX] = levels[level].thisLevelsObjs[i];
+        printf("x:%d , y:%d", levelStruct.thisLevelsObjs[i]->locY, levelStruct.thisLevelsObjs[i]->locX);
+        field[levelStruct.thisLevelsObjs[i]->locY][levelStruct.thisLevelsObjs[i]->locX] = levelStruct.thisLevelsObjs[i];
     }
 
     field[warrior.locY][warrior.locX] = &warrior;
 }
 
-void show(int level)
+void show()
 {
-    for (int j = 0; j <= levels[level].height + 1; j++)
+    for (int j = 0; j <= levelStruct.height + 1; j++)
     {
-        for (int i = 0; i <= levels[level].width + 1; i++)
+        for (int i = 0; i <= levelStruct.width + 1; i++)
         {
             printf("%s ,", field[j][i]->name);
         }
@@ -236,7 +237,7 @@ void check(int level)
         isLevelOn = 0;
         printf("Only one action can be performed per turn.\n");
     }
-    else if (warrior.locX == levels[level].stairX && warrior.locY == levels[level].stairY)
+    else if (warrior.locX == levelStruct.stairX && warrior.locY == levelStruct.stairY)
     {
         isLevelOn = 0;
         printf("%s", "NICE! ");
@@ -246,8 +247,14 @@ void check(int level)
 
 void setupObjects()
 {
+    for (int i = 0; i < levelStruct.objsLength; i++)
+    {
+        objectStat[i] = 1;
+    }
+
     warrior.character = '@';
     warrior.health = 20;
+    warrior.maxHealth = 20;
     warrior.locX = 1;
     warrior.locY = 1;
     warrior.enemy = 0;
@@ -267,11 +274,12 @@ void setupObjects()
     strcpy(stairs.name, "Stairs");
 }
 
-void objectsRun(int level)
+void objectsRun()
 {
-    for (int i = 0; i < levels[level].objsLength; i++)
+    for (int i = 0; i < levelStruct.objsLength; i++)
     {
-        levels[level].thisLevelsObjs[0]->run(levels[level].thisLevelsObjs[0]);
+        if (levelStruct.thisLevelsObjs[i]->health > 0)
+            levelStruct.thisLevelsObjs[i]->run(levelStruct.thisLevelsObjs[i]);
     }
 }
 
@@ -280,11 +288,14 @@ void resetCall()
     call = 0;
 }
 
-void cleaner(int level)
+void cleaner()
 {
-    for (int i = 0; i < levels[level].objsLength; i++)
+    for (int i = 0; i < levelStruct.objsLength; i++)
     {
-        if (levels[level].thisLevelsObjs[i]->health == 0)
-            field[levels[level].thisLevelsObjs[i]->locY][levels[level].thisLevelsObjs[i]->locX] = &space;
+        if (levelStruct.thisLevelsObjs[i]->health == 0 && objectStat[i] == 1)
+        {
+            field[levelStruct.thisLevelsObjs[i]->locY][levelStruct.thisLevelsObjs[i]->locX] = &space;
+            objectStat[i] = 0;
+        }
     }
 }
