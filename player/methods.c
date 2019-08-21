@@ -3,9 +3,6 @@
 // int isWall();
 // int isobj();
 // getobj();
-// void heal(int amount);
-// void takeDamage(int amount);
-// void damage(receiver, amount);
 // void release(obj);
 // void unbind();
 // void rotate();
@@ -59,20 +56,27 @@ int _isEmpty(Object obj)
     }
 }
 
-Object *_getObject(Object obj)
+Object *_getObject(Object obj, int distance)
 {
+    if (obj.locX - distance < 0)
+        return NULL;
+
     switch (obj.face)
     {
     case EAST:
-        if (field[obj.locY][obj.locX + 1]->character == ' ' || field[obj.locY][obj.locX + 1]->character == '>')
+        if (field[obj.locY][obj.locX + distance]->character == ' ' ||
+            field[obj.locY][obj.locX + distance]->character == '>' ||
+            field[obj.locY][obj.locX + distance]->character == 'W')
             return NULL;
         else
-            return field[obj.locY][obj.locX + 1];
+            return field[obj.locY][obj.locX + distance];
     case WEST:
-        if (field[obj.locY][obj.locX - 1]->character == ' ' || field[obj.locY][obj.locX - 1]->character == '>')
+        if (field[obj.locY][obj.locX - distance]->character == ' ' ||
+            field[obj.locY][obj.locX - distance]->character == '>' ||
+            field[obj.locY][obj.locX - distance]->character == 'W')
             return NULL;
         else
-            return field[obj.locY][obj.locX - 1];
+            return field[obj.locY][obj.locX - distance];
     default:
         return NULL;
     }
@@ -81,4 +85,20 @@ Object *_getObject(Object obj)
 void _damage(Object *obj, int damage)
 {
     obj->health = obj->health - damage >= 0 ? obj->health - damage : 0;
+}
+
+void _heal(Object *obj, int amount)
+{
+    obj->health = obj->health + amount <= obj->maxHealth ? obj->health + amount : obj->maxHealth;
+    _log(obj->name, "rests");
+}
+
+int _health(Object obj)
+{
+    return obj.health;
+}
+
+int _maxHealth(Object obj)
+{
+    return obj.maxHealth;
 }
