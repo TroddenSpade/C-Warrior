@@ -1,11 +1,12 @@
+# Level 1 - Baby Steps
 
-### _For players new to WarriorJS_
+### _For players new to C-Warrior_
 
 ## Level 1
 
 _You see before yourself a long hallway with stairs at the end. There's nothing in the way._
 
-> **TIP:** Call `warrior.walk()` to walk forward in the Player's `playTurn` method.
+> **TIP:** Call `walk(Warrior)` to walk forward in the Player's `playTurn` function.
 
 ### Floor Map
 
@@ -14,7 +15,7 @@ _You see before yourself a long hallway with stairs at the end. There's nothing 
 ║@      >║
 ╚════════╝
 
-@ = Umar (20 HP)
+@ = Warrior (20 HP)
 > = stairs
 ```
 
@@ -22,12 +23,9 @@ _You see before yourself a long hallway with stairs at the end. There's nothing 
 
 ### Actions (only one per turn)
 
-- `warrior.walk()`: Moves one space in the given direction (`'forward'` by default).
+- `walk(WARRIOR)`: Moves one space in the given direction (`"forward"` by default).
 
-### Senses
-
-- `warrior.think()`: Thinks out loud (`console.log` replacement).
 
 ## Next Steps
 
-When you're done editing `Player.js`, run the `warriorjs` command again.
+When you're done editing `Player.c`, run the `run` command again.
