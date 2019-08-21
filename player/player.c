@@ -12,7 +12,9 @@
 #define TURN_L "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~ "
 #define TURN_R " ~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 #define WALL 'W'
+#define __S_A_C__ call++;
 
+int call = 0;
 int isLevelOn = 1;
 int timeBonus;
 int aceScore;
@@ -24,6 +26,7 @@ struct Object *field[10][20];
 #include "../data/Player.c"
 
 #ifdef _WIN32
+#include <windows.h>
 #include <fcntl.h>
 #include <io.h>
 #define HEART L"\u2665"
@@ -53,6 +56,8 @@ void draw(int level);
 void show(int level);
 void check(int level);
 void objectsRun(int level);
+void resetCall();
+void cleaner(int level);
 
 int play(int level)
 {
@@ -62,6 +67,7 @@ int play(int level)
     setupField(level);
     puts(LVL_HEADER);
 
+    system("color 0a");
     printf("%s000%s\n", TURN_L, TURN_R);
     draw(level);
     sleep(SLEEP_TIME);
@@ -76,10 +82,12 @@ int play(int level)
         strcat(turn, step);
         strcat(turn, TURN_R);
         puts(turn);
+        cleaner(level);
         playTurn();
         objectsRun(level);
         draw(level);
         check(level);
+        resetCall();
         sleep(SLEEP_TIME);
     }
 }
@@ -189,8 +197,6 @@ void setupField(int level)
         field[i][levels[level].width + 1] = &wall;
     }
 
-    puts("yellow");
-
     for (int i = 0; i <= levels[level].width + 1; i++)
     {
         field[levels[level].height + 1][i] = &wall;
@@ -220,16 +226,21 @@ void show(int level)
 
 void check(int level)
 {
-    if (warrior.locX == levels[level].stairX && warrior.locY == levels[level].stairY)
-    {
-        isLevelOn = 0;
-        printf("%s", "LEVEL Done!");
-        generateLevel(level + 2, 0);
-    }
-    else if (warrior.health == 0)
+    if (warrior.health == 0)
     {
         isLevelOn = 0;
         printf("Warrior Died!, you failed level %d", level + 1);
+    }
+    else if (call > 1)
+    {
+        isLevelOn = 0;
+        printf("Only one action can be performed per turn.\n");
+    }
+    else if (warrior.locX == levels[level].stairX && warrior.locY == levels[level].stairY)
+    {
+        isLevelOn = 0;
+        printf("%s", "NICE! ");
+        generateLevel(level + 2, 0);
     }
 }
 
@@ -261,5 +272,19 @@ void objectsRun(int level)
     for (int i = 0; i < levels[level].objsLength; i++)
     {
         levels[level].thisLevelsObjs[0]->run(levels[level].thisLevelsObjs[0]);
+    }
+}
+
+void resetCall()
+{
+    call = 0;
+}
+
+void cleaner(int level)
+{
+    for (int i = 0; i < levels[level].objsLength; i++)
+    {
+        if (levels[level].thisLevelsObjs[i]->health == 0)
+            field[levels[level].thisLevelsObjs[i]->locY][levels[level].thisLevelsObjs[i]->locX] = &space;
     }
 }
