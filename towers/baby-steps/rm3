@@ -1,0 +1,39 @@
+# Level 3 - Baby Steps
+
+### _For players new to C-Warrior_
+
+## Level 3
+
+_The air feels thicker than before. There must be a horde of sludge._
+
+> **TIP:** Be careful not to die! Use `health(Warrior)` and `maxHealth(Warrior)` to keep an eye on your health, and `rest(Warrior)` to earn 10% of your max health back.
+
+### Floor Map
+
+```
+╔═════════╗
+║@ s ss s>║
+╚═════════╝
+
+@ = Warrior (20 HP)
+s = Sludge (12 HP)
+> = stairs
+```
+
+## Abilities
+
+### Actions (only one per turn)
+
+- `attack(Warrior)`: Attacks a unit in the given direction (`'forward'` by default), dealing 5 HP of damage.
+- `rest(Warrior)`: Gains 10% of max health back, but does nothing more.
+- `walk(Warrior)`: Moves one space in the given direction (`'forward'` by default).
+
+### Senses
+
+- `isEmpty(Warrior)`: Returns `1` if there exists an Object in the given direction (`'forward'` by default).
+- `health(Warrior)`: Returns an integer representing your health.
+- `maxHealth(Warrior)`: Returns an integer representing your maximum health.
+
+## Next Steps
+
+When you're done editing `Player.c`, run the `run` command again.
