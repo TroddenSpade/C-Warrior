@@ -39,7 +39,7 @@ void objConstructor()
     strcpy(objs[0].name, "Sludge");
     objs[0].character = 'S';
     objs[0].health = 12;
-    objs[0].locX = 3;
+    objs[0].locX = 5;
     objs[0].locY = 1;
     objs[0].enemy = 1;
     objs[0].face = WEST;
@@ -48,6 +48,8 @@ void objConstructor()
 
 void walk(Object *obj)
 {
+    __S_A_C__
+
     if (_isEmpty(*obj))
     {
         _move(obj);
@@ -61,16 +63,22 @@ void walk(Object *obj)
 
 void attack(Object *obj)
 {
-    // const receiver = obj.getSpaceAt(direction).getobj();
-    // if (receiver)
-    // {
-    //     obj.log(`attacks ${direction} and hits $ { receiver }`);
-    //     obj.damage(receiver, 5);
-    // }
-    // else
-    // {
-    //     obj.log(`attacks ${direction} and hits nothing`);
-    // }
+    __S_A_C__
+
+    if (_isEmpty(*obj))
+    {
+        _log(obj->name, "attacks and hits nothing!");
+    }
+    else
+    {
+        _log(obj->name, "attacks and hits 5");
+        _damage(_getObject(*obj), 5);
+    }
+}
+
+int isEmpty(Object *obj)
+{
+    return _isEmpty(*obj) ? 1 : 0;
 }
 
 /////////////////////////////////// Run Methods ////////////////////////////////////
