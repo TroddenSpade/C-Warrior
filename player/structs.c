@@ -4,6 +4,8 @@ enum Face
     WEST
 };
 
+typedef void (*Function)();
+
 typedef struct Object
 {
     int health;
