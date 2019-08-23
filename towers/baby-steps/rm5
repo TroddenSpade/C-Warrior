@@ -1,23 +1,24 @@
-# Level 4 - Baby Steps
+# Level 5 - Baby Steps
 
 ### _For players new to C-Warrior_
 
-## Level 4
+## Level 5
 
-_You can hear bow strings being stretched._
+_You hear cries for help. Captives must need rescuing._
 
-> **TIP:** No new abilities this time, but you must be careful not to rest while taking damage. Save a `notebook.health` variable and compare it on each turn to see if you're taking damage.
+> **TIP:** Combine `isEmpty(Warrior)` and `isBound(Warrior)` to see if there's a captive, and `rescue(Warrior)` to rescue him. Don't attack captives.
 
 ### Floor Map
 
 ```
 ╔═══════╗
-║@ Sa S>║
+║@ CaaSC║
 ╚═══════╝
 
-@ = Warrior (20 HP)
-S = Thick Sludge (19 HP)
+@ = warrior (20 HP)
+C = Captive (1 HP)
 a = Archer (7 HP)
+S = Thick Sludge (24 HP)
 > = stairs
 ```
 
@@ -25,6 +26,7 @@ a = Archer (7 HP)
 
 ### Actions (only one per turn)
 
+- `rescue(Warrior)`: Releases a unit from his chains in the given direction (`'forward'` by default).
 - `attack(Warrior)`: Attacks a unit in the given direction (`'forward'` by default), dealing 5 HP of damage.
 - `rest(Warrior)`: Gains 10% of max health back, but does nothing more.
 - `walk(Warrior)`: Moves one space in the given direction (`'forward'` by default).
@@ -34,6 +36,8 @@ a = Archer (7 HP)
 - `isEmpty(Warrior)`: Returns `1` if there exists an Object in the given direction (`'forward'` by default).
 - `health(Warrior)`: Returns an integer representing your health.
 - `maxHealth(Warrior)`: Returns an integer representing your maximum health.
+- `isBound(Warrior)`
+
 
 ## Next Steps
 
