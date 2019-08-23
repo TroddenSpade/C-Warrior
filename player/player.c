@@ -206,10 +206,11 @@ void setupField()
 
     for (int i = 0; i < levelStruct.objsLength; i++)
     {
-        printf("x:%d , y:%d", levelStruct.thisLevelsObjs[i]->locY, levelStruct.thisLevelsObjs[i]->locX);
         field[levelStruct.thisLevelsObjs[i]->locY][levelStruct.thisLevelsObjs[i]->locX] = levelStruct.thisLevelsObjs[i];
     }
 
+    warrior.locX = levelStruct.startX;
+    warrior.locY = levelStruct.startY;
     field[warrior.locY][warrior.locX] = &warrior;
 }
 
@@ -240,7 +241,7 @@ void check(int level)
     else if (warrior.locX == levelStruct.stairX && warrior.locY == levelStruct.stairY)
     {
         isLevelOn = 0;
-        printf("%s", "NICE! ");
+        printf("%s", "Well Done! ");
         generateLevel(level + 2, 0);
     }
 }
@@ -293,6 +294,13 @@ void cleaner()
     for (int i = 0; i < levelStruct.objsLength; i++)
     {
         if (levelStruct.thisLevelsObjs[i]->health == 0 && objectStat[i] == 1)
+        {
+            field[levelStruct.thisLevelsObjs[i]->locY][levelStruct.thisLevelsObjs[i]->locX] = &space;
+            objectStat[i] = 0;
+        }
+        if (objectStat[i] == 1 &&
+            levelStruct.thisLevelsObjs[i]->enemy == 0 &&
+            levelStruct.thisLevelsObjs[i]->bound == 0)
         {
             field[levelStruct.thisLevelsObjs[i]->locY][levelStruct.thisLevelsObjs[i]->locX] = &space;
             objectStat[i] = 0;
