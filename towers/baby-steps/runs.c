@@ -13,14 +13,14 @@ void archer_run(Object *obj)
     Object *neighbour = _getObject(*obj, 1);
     Object *neighbour2 = _getObject(*obj, 2);
     Object *neighbour3 = _getObject(*obj, 3);
-    if (neighbour != NULL && neighbour->enemy != obj->enemy)
+    if (neighbour != NULL && neighbour->character == '@')
     {
         _log(obj->name, "attacks and hits 3");
         _damage(neighbour, 3);
     }
     else if (neighbour == NULL &&
              neighbour2 != NULL &&
-             neighbour2->enemy != obj->enemy)
+             neighbour2->character == '@')
     {
         _log(obj->name, "attacks and hits 3");
         _damage(neighbour2, 3);
@@ -28,11 +28,15 @@ void archer_run(Object *obj)
     else if (neighbour == NULL &&
              neighbour2 == NULL &&
              neighbour3 != NULL &&
-             neighbour3->enemy != obj->enemy)
+             neighbour3->character == '@')
     {
         _log(obj->name, "attacks and hits 3");
         _damage(neighbour3, 3);
     }
+}
+
+void captive_run(Object *obj)
+{
 }
 
 void wizard_run(Object *obj)
