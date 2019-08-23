@@ -31,9 +31,13 @@ typedef struct Level
     int height;
     int stairX;
     int stairY;
-    int maxHealth;
     int startX;
     int startY;
     int objsLength;
     Object *thisLevelsObjs[];
 } Level;
+
+struct Storage
+{
+    int health;
+} notebook;
