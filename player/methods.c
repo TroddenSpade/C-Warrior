@@ -102,3 +102,19 @@ int _maxHealth(Object obj)
 {
     return obj.maxHealth;
 }
+
+int _isBound(Object obj)
+{
+    return obj.bound;
+}
+
+void _release(Object *obj)
+{
+    obj->bound = 0;
+    _log(obj->name, "released from bonds!");
+}
+
+void _rotate(Object *obj)
+{
+    obj->face = obj->face == WEST ? EAST : WEST;
+}
