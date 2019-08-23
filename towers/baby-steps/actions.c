@@ -50,3 +50,37 @@ void rest(Object *obj)
     _heal(obj, 1 / 10. * obj->maxHealth);
     _log(obj->name, "receives 2 health");
 }
+
+void rescue(Object *obj)
+{
+    __S_A_C__
+
+    Object *neighbour = _getObject(*obj, 1);
+    if (neighbour != NULL && _isBound(*neighbour))
+    {
+        _release(neighbour);
+        _log(obj->name, "unbinds forward and rescues a Captive");
+    }
+    else
+    {
+        _log(obj->name, "unbinds forward and rescues nothing");
+    }
+}
+
+int isBound(Object *obj)
+{
+    Object *neighbour = _getObject(*obj, 1);
+    if (neighbour != NULL)
+    {
+        return _isBound(*neighbour);
+    }
+    return 0;
+}
+
+void pivot(Object *obj)
+{
+    __S_A_C__
+
+    _rotate(obj);
+    _log(obj->name, "pivots.");
+}
