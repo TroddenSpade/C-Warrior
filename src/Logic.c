@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include "player.h"
-#include "../main.h"
-#include "structs.c"
+#include "Logic.h"
+#include "Main.h"
 
 #define SLEEP_TIME 1
 #define MAX_RUN_TIME 100
@@ -22,9 +21,9 @@ int score = 0;
 struct Object *field[10][20];
 int objectStat[100];
 
-#include "methods.c"
-#include "../towers/baby-steps/index.c"
-#include "../data/Player.c"
+#include "Methods.c"
+#include "../towers/list.c"
+#include "../profile/Play.c"
 
 #ifdef _WIN32
 #include <fcntl.h>
@@ -59,7 +58,7 @@ void objectsRun();
 void resetCall();
 void cleaner();
 
-int play(int level)
+void play(int level)
 {
     initialLevels();
     functions[level]();
@@ -94,88 +93,30 @@ int play(int level)
 
 void draw()
 {
-    if (__APPLE__)
+
+    printf("%s %d\n", HEART, warrior.health);
+    printf("%s %d\n", SCORE, score);
+    printf("%s", UP_LEFT);
+    for (int j = 0; j < levelStruct.width; j++)
     {
-        printf("%s %d\n", HEART, warrior.health);
-        printf("%s %d\n", SCORE, score);
-        printf("%s", UP_LEFT);
-        for (int j = 0; j < levelStruct.width; j++)
-        {
-            printf("%s", VER);
-        }
-        printf("%s\n", UP_RIGHT);
-        for (int i = 0; i < levelStruct.height; i++)
-        {
-            printf("%s", HOR);
-            for (int j = 0; j < levelStruct.width; j++)
-            {
-                printf("%c", field[i + 1][j + 1]->character);
-            }
-            printf("%s\n", HOR);
-        }
-        printf("%s", DOWN_LEFT);
-        for (int j = 0; j < levelStruct.width; j++)
-        {
-            printf("%s", VER);
-        }
-        printf("%s\n", DOWN_RIGHT);
+        printf("%s", VER);
     }
-    else
+    printf("%s\n", UP_RIGHT);
+    for (int i = 0; i < levelStruct.height; i++)
     {
-        _setmode(_fileno(stdout), 0x00020000);
-        wprintf(HEART);
-        _setmode(_fileno(stdout), 0x4000);
-        printf(" %d\n", warrior.health);
-
-        _setmode(_fileno(stdout), 0x00020000);
-        wprintf(SCORE);
-        _setmode(_fileno(stdout), 0x4000);
-        printf(" %d\n", score);
-
-        _setmode(_fileno(stdout), 0x00020000);
-        wprintf(UP_LEFT);
-        _setmode(_fileno(stdout), 0x4000);
+        printf("%s", HOR);
         for (int j = 0; j < levelStruct.width; j++)
         {
-            _setmode(_fileno(stdout), 0x00020000);
-            wprintf(VER);
-            _setmode(_fileno(stdout), 0x4000);
+            printf("%c", field[i + 1][j + 1]->character);
         }
-
-        _setmode(_fileno(stdout), 0x00020000);
-        wprintf(UP_RIGHT);
-        _setmode(_fileno(stdout), 0x4000);
-        puts("");
-
-        for (int i = 0; i < levelStruct.height; i++)
-        {
-            _setmode(_fileno(stdout), 0x00020000);
-            wprintf(HOR);
-            _setmode(_fileno(stdout), 0x4000);
-            for (int j = 0; j < levelStruct.width; j++)
-            {
-                printf("%c", field[i + 1][j + 1]->character);
-            }
-            _setmode(_fileno(stdout), 0x00020000);
-            wprintf(HOR);
-            _setmode(_fileno(stdout), 0x4000);
-            puts("");
-        }
-
-        _setmode(_fileno(stdout), 0x00020000);
-        wprintf(DOWN_LEFT);
-        _setmode(_fileno(stdout), 0x4000);
-        for (int j = 0; j < levelStruct.width; j++)
-        {
-            _setmode(_fileno(stdout), 0x00020000);
-            wprintf(VER);
-            _setmode(_fileno(stdout), 0x4000);
-        }
-        _setmode(_fileno(stdout), 0x00020000);
-        wprintf(DOWN_RIGHT);
-        _setmode(_fileno(stdout), 0x4000);
-        puts("");
+        printf("%s\n", HOR);
     }
+    printf("%s", DOWN_LEFT);
+    for (int j = 0; j < levelStruct.width; j++)
+    {
+        printf("%s", VER);
+    }
+    printf("%s\n", DOWN_RIGHT);
 }
 
 void setupField()

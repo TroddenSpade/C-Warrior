@@ -1,86 +1,57 @@
-void walk(Object *obj)
-{
-    __S_A_C__
-
-    if (_isEmpty(*obj))
-    {
-        _move(obj);
-        _log(obj->name, "is walking");
-    }
-    else
-    {
-        _log(obj->name, "can't move");
-    }
-}
-
-void attack(Object *obj)
-{
-    __S_A_C__
-
-    if (_isEmpty(*obj))
-    {
-        _log(obj->name, "attacks and hits nothing!");
-    }
-    else
-    {
-        _log(obj->name, "attacks and hits 5");
-        _damage(_getObject(*obj, 1), 5);
-    }
-}
-
-int isEmpty(Object *obj)
-{
-    return _isEmpty(*obj) ? 1 : 0;
-}
-
-int health(Object *obj)
-{
-    return _health(*obj);
-}
-
-int maxHealth(Object *obj)
-{
-    return _maxHealth(*obj);
-}
-
-void rest(Object *obj)
-{
-    __S_A_C__
-
-    _heal(obj, 1 / 10. * obj->maxHealth);
-    _log(obj->name, "receives 2 health");
-}
-
-void rescue(Object *obj)
-{
-    __S_A_C__
-
-    Object *neighbour = _getObject(*obj, 1);
-    if (neighbour != NULL && _isBound(*neighbour))
-    {
-        _release(neighbour);
-        _log(obj->name, "unbinds forward and rescues a Captive");
-    }
-    else
-    {
-        _log(obj->name, "unbinds forward and rescues nothing");
-    }
-}
-
-int isBound(Object *obj)
+void sludge_run(Object *obj)
 {
     Object *neighbour = _getObject(*obj, 1);
-    if (neighbour != NULL)
+    if (neighbour != NULL && neighbour->enemy != obj->enemy)
     {
-        return _isBound(*neighbour);
+        _log(obj->name, "attacks and hits 3");
+        _damage(neighbour, 3);
     }
-    return 0;
 }
 
-void pivot(Object *obj)
+void archer_run(Object *obj)
 {
-    __S_A_C__
+    Object *neighbour = _getObject(*obj, 1);
+    Object *neighbour2 = _getObject(*obj, 2);
+    Object *neighbour3 = _getObject(*obj, 3);
+    if (neighbour != NULL && neighbour->character == '@')
+    {
+        _log(obj->name, "attacks and hits 3");
+        _damage(neighbour, 3);
+    }
+    else if (neighbour == NULL &&
+             neighbour2 != NULL &&
+             neighbour2->character == '@')
+    {
+        _log(obj->name, "attacks and hits 3");
+        _damage(neighbour2, 3);
+    }
+    else if (neighbour == NULL &&
+             neighbour2 == NULL &&
+             neighbour3 != NULL &&
+             neighbour3->character == '@')
+    {
+        _log(obj->name, "attacks and hits 3");
+        _damage(neighbour3, 3);
+    }
+}
 
-    _rotate(obj);
-    _log(obj->name, "pivots.");
+void captive_run(Object *obj)
+{
+}
+
+void wizard_run(Object *obj)
+{
+    // const threatDirection = RELATIVE_DIRECTIONS.find(direction = > {
+    //     const spaceWithUnit = archer
+    //                               .look(direction)
+    //                               .find(space = > space.isUnit());
+    //     return (
+    //         spaceWithUnit &&
+    //         spaceWithUnit.getUnit().isEnemy() &&
+    //         !spaceWithUnit.getUnit().isBound());
+    // });
+    // if (threatDirection)
+    // {
+    //     archer.shoot(threatDirection);
+    // }
 }

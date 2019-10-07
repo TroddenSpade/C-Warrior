@@ -1,7 +1,7 @@
 #include "actions.c"
-#include "runs.c"
+#include "player.c"
 
-#define NUMBER_OF_LEVELS 4
+#define NUMBER_OF_LEVELS 6
 #define NUMBER_OF_LEVEL_1_OBJECTS 0
 #define NUMBER_OF_LEVEL_2_OBJECTS 1
 #define NUMBER_OF_LEVEL_3_OBJECTS 4
@@ -263,7 +263,7 @@ void level6()
     lvl_6_objs[2].health = 7;
     lvl_6_objs[2].locX = 7;
     lvl_6_objs[2].locY = 1;
-    lvl_6_objs[4].bound = 0;
+    lvl_6_objs[2].bound = 0;
     lvl_6_objs[2].enemy = 1;
     lvl_6_objs[2].face = WEST;
     lvl_6_objs[2].run = &archer_run;

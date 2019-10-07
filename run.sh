@@ -2,7 +2,7 @@ rm -r ./main.exe
 rm -r ./main
 rm -r ./main.out
 
-FILE=./data/Player.c
+FILE=./profile/Play.c
 if [ -f "$FILE" ]; then
     echo "$FILE exist"
 else 
@@ -15,6 +15,6 @@ fi
 
 gcc main.c ./player/player.c -o main
 
-clear
+# clear
 
 ./main

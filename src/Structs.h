@@ -1,3 +1,6 @@
+#ifndef A_H
+#define A_H
+
 enum Face
 {
     EAST,
@@ -41,3 +44,5 @@ struct Storage
 {
     int health;
 } notebook;
+
+#endif

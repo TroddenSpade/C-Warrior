@@ -1,9 +1,9 @@
 del ".\main.exe" /s /f /q
 
 if exist .\data\Player.c (
-    echo ".\data\Player.c  exists"
+    echo ".\profile\Play.c  exists"
 ) else (
-    echo ".\data\Player.c  doesn't exist, creating a new Player.c ..."
+    echo ".\profile\Play.c  doesn't exist, creating a new Player.c ..."
     @echo off
     (
     echo void playTurn(^)

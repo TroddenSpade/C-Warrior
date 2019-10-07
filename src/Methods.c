@@ -1,12 +1,4 @@
-// void getLocation();
-// int isStairs();
-// int isWall();
-// int isobj();
-// getobj();
-// void release(obj);
-// void unbind();
-// void rotate();
-// void print(char log[]);
+#include "Structs.h"
 
 void _move(Object *obj)
 {

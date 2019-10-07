@@ -1,10 +1,11 @@
-#include "./player/player.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <dirent.h>
+
+#include "Logic.h"
+#include "Main.h"
 
 #define WELCOME "~~~~~~~~~~~~~~~~~~~~~~~~~~~~+*+~~~+*$#$*+~~~+*+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n                           Welcome to C Warrior!\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~+*+~~~+*$#$*+~~~+*+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
 #define ENTER_NAME "? Enter a name for your warrior: "
@@ -26,7 +27,6 @@ struct Profile
 void readProfile(FILE *fptr);
 void createProfile();
 void printProfile();
-void generateLevel();
 void copyReadMe(int);
 
 int main()
@@ -36,7 +36,7 @@ int main()
     if (dir)
     {
         FILE *fptr;
-        fptr = fopen("./data/.profile", "rb");
+        fptr = fopen("../profile/.profile", "rb");
         if (fptr == NULL)
         {
             createProfile();
@@ -141,11 +141,11 @@ void copyReadMe(int level)
 void generateLevel(int level, int score)
 {
     FILE *playerFile;
-    playerFile = fopen("./data/Player.c", "r");
+    playerFile = fopen("../profile/Play.c", "r");
     if (playerFile == NULL)
     {
         FILE *newFile;
-        newFile = fopen("./data/Player.c", "w");
+        newFile = fopen("../profile/Play.c", "w");
         fprintf(newFile, "%s", INIT_PLAYER_FILE);
         fclose(newFile);
     }
@@ -153,7 +153,7 @@ void generateLevel(int level, int score)
     myProfile.level = level;
     myProfile.score = score;
     FILE *fptr;
-    fptr = fopen("./data/.profile", "wb");
+    fptr = fopen("../profile/.profile", "wb");
     fwrite(&myProfile, sizeof(struct Profile), 1, fptr);
     copyReadMe(level);
     printf("Level %d %s\n", level, GEN_LEVEL);
