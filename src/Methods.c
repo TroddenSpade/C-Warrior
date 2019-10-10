@@ -1,5 +1,6 @@
 #include "Structs.h"
 
+
 void _move(Object *obj)
 {
     field[obj->locY][obj->locX] = &space;

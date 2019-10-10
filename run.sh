@@ -13,8 +13,8 @@ else
 }" > "$FILE"
 fi
 
-gcc main.c ./player/player.c -o main
+gcc ./src/Main.c ./src/Logic.c -o main.out
 
-# clear
+clear
 
-./main
+./main.out

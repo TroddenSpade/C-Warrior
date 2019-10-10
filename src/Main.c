@@ -32,7 +32,7 @@ void copyReadMe(int);
 int main()
 {
     printf("%s", WELCOME);
-    DIR *dir = opendir("data");
+    DIR *dir = opendir("profile");
     if (dir)
     {
         FILE *fptr;
@@ -50,7 +50,7 @@ int main()
     }
     else
     {
-        printf("%s", "corrupted files !\nget files from : https://github.com/3pic/C-Warrior");
+        printf("%s", "corrupted files !\nget files from : https://github.com/troddenspade/C-Warrior");
         return 0;
     }
 
@@ -147,6 +147,7 @@ void generateLevel(int level, int score)
         FILE *newFile;
         newFile = fopen("../profile/Play.c", "w");
         fprintf(newFile, "%s", INIT_PLAYER_FILE);
+
         fclose(newFile);
     }
     fclose(playerFile);
