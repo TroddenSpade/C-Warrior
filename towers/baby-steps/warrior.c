@@ -1,6 +1,15 @@
-void walk(Object *obj)
+typedef struct Warrior
+{
+    void (*walk)();
+} Warrior;
+
+Warrior *warrior ;
+
+void walk()
 {
     __S_A_C__
+
+    Object *obj = &__warrior;
 
     if (_isEmpty(*obj))
     {
@@ -13,9 +22,12 @@ void walk(Object *obj)
     }
 }
 
-void attack(Object *obj)
+void attack()
 {
     __S_A_C__
+
+    Object *obj = &__warrior;
+
 
     if (_isEmpty(*obj))
     {
@@ -28,32 +40,42 @@ void attack(Object *obj)
     }
 }
 
-int isEmpty(Object *obj)
+int isEmpty()
 {
+    Object *obj = &__warrior;
+
     return _isEmpty(*obj) ? 1 : 0;
 }
 
-int health(Object *obj)
+int health()
 {
+    Object *obj = &__warrior;
+
     return _health(*obj);
 }
 
-int maxHealth(Object *obj)
+int maxHealth()
 {
+    Object *obj = &__warrior;
+
     return _maxHealth(*obj);
 }
 
-void rest(Object *obj)
+void rest()
 {
     __S_A_C__
+    
+    Object *obj = &__warrior;
 
     _heal(obj, 1 / 10. * obj->maxHealth);
     _log(obj->name, "receives 2 health");
 }
 
-void rescue(Object *obj)
+void rescue()
 {
     __S_A_C__
+
+    Object *obj = &__warrior;
 
     Object *neighbour = _getObject(*obj, 1);
     if (neighbour != NULL && _isBound(*neighbour))
@@ -83,4 +105,11 @@ void pivot(Object *obj)
 
     _rotate(obj);
     _log(obj->name, "pivots.");
+}
+
+void constructor()
+{
+    warrior = malloc(sizeof(Warrior));
+
+    warrior->walk = &walk;
 }
