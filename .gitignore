@@ -1,6 +1,5 @@
 *.test.c
 *.exe
 *.out
-data/
-data/player.c
 .vscode
+profile/

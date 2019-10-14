@@ -11,9 +11,8 @@
 #define ENTER_NAME "? Enter a name for your warrior: "
 #define ENTER_ID "? Enter your Id: "
 #define SELECT_TOWER "? Choose a tower: "
-#define INIT_PLAYER_FILE "void playTurn()\n{\n    // your code goes here\n}\n"
 #define CHOOSE_PROFILE "? Choose a profile: "
-#define GEN_LEVEL "has been generated. See data/README.md for instructions."
+#define GEN_LEVEL "has been generated. See profile/README.md for instructions."
 
 struct Profile
 {
@@ -36,7 +35,7 @@ int main()
     if (dir)
     {
         FILE *fptr;
-        fptr = fopen("../profile/.profile", "rb");
+        fptr = fopen("./profile/.profile", "rb");
         if (fptr == NULL)
         {
             createProfile();
@@ -67,7 +66,8 @@ void createProfile()
     printf("%s", "'Baby-Steps' has been set as default\n");
     // scanf("%s",myProfile.tower);
     strcpy(myProfile.tower, "baby-steps");
-    generateLevel(1, 0);
+    setData(1, 0);
+    generateLevel(1);
 }
 
 void readProfile(FILE *fptr)
@@ -117,11 +117,11 @@ void copyReadMe(int level)
     fptr1 = fopen(loc, "r");
     if (fptr1 == NULL)
     {
-        printf("Cannot open file %s \n", "towers");
+        printf("Cannot open file %s \n", loc);
         exit(0);
     }
 
-    fptr2 = fopen("./data/README.md", "w");
+    fptr2 = fopen("./profile/README.md", "w");
     if (fptr2 == NULL)
     {
         printf("Cannot open file %s \n", "README.md");
@@ -138,24 +138,17 @@ void copyReadMe(int level)
     fclose(fptr2);
 }
 
-void generateLevel(int level, int score)
+void setData(int level, int score)
 {
-    FILE *playerFile;
-    playerFile = fopen("../profile/Play.c", "r");
-    if (playerFile == NULL)
-    {
-        FILE *newFile;
-        newFile = fopen("../profile/Play.c", "w");
-        fprintf(newFile, "%s", INIT_PLAYER_FILE);
-
-        fclose(newFile);
-    }
-    fclose(playerFile);
     myProfile.level = level;
     myProfile.score = score;
     FILE *fptr;
-    fptr = fopen("../profile/.profile", "wb");
+    fptr = fopen("./profile/.profile", "wb");
     fwrite(&myProfile, sizeof(struct Profile), 1, fptr);
+}
+
+void generateLevel(int level)
+{
     copyReadMe(level);
     printf("Level %d %s\n", level, GEN_LEVEL);
 }

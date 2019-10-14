@@ -6,7 +6,6 @@
 
 #define SLEEP_TIME 1
 #define MAX_RUN_TIME 100
-#define Warrior &warrior
 #define LVL_HEADER "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ LEVEL ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 #define TURN_L "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~ "
 #define TURN_R " ~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -72,14 +71,7 @@ void play(int level)
     int counter = 1;
     while (isLevelOn)
     {
-        char turn[80];
-        char step[3];
-        int stp = counter++;
-        snprintf(step, 4, "%03d", stp);
-        strcpy(turn, TURN_L);
-        strcat(turn, step);
-        strcat(turn, TURN_R);
-        puts(turn);
+        printf("%s%03d%s\n", TURN_L, counter, TURN_R);
 
         playTurn();
         objectsRun();
@@ -88,13 +80,14 @@ void play(int level)
         check(level);
         resetCall();
         sleep(SLEEP_TIME);
+        counter++;
     }
 }
 
 void draw()
 {
 
-    printf("%s %d\n", HEART, warrior.health);
+    printf("%s %d\n", HEART, __warrior.health);
     printf("%s %d\n", SCORE, score);
     printf("%s", UP_LEFT);
     for (int j = 0; j < levelStruct.width; j++)
@@ -150,9 +143,9 @@ void setupField()
         field[levelStruct.thisLevelsObjs[i]->locY][levelStruct.thisLevelsObjs[i]->locX] = levelStruct.thisLevelsObjs[i];
     }
 
-    warrior.locX = levelStruct.startX;
-    warrior.locY = levelStruct.startY;
-    field[warrior.locY][warrior.locX] = &warrior;
+    __warrior.locX = levelStruct.startX;
+    __warrior.locY = levelStruct.startY;
+    field[__warrior.locY][__warrior.locX] = &__warrior;
 }
 
 void show()
@@ -169,21 +162,22 @@ void show()
 
 void check(int level)
 {
-    if (warrior.health == 0)
+    if (__warrior.health == 0)
     {
         isLevelOn = 0;
-        printf("Warrior Died!, you failed level %d", level + 1);
+        printf("Warrior Died! you failed level %d\n", level + 1);
     }
     else if (call > 1)
     {
         isLevelOn = 0;
         printf("Only one action can be performed per turn.\n");
     }
-    else if (warrior.locX == levelStruct.stairX && warrior.locY == levelStruct.stairY)
+    else if (__warrior.locX == levelStruct.stairX && __warrior.locY == levelStruct.stairY)
     {
         isLevelOn = 0;
         printf("%s", "Well Done! ");
-        generateLevel(level + 2, 0);
+        generateLevel(level + 2);
+        setData(level + 2, 0);
     }
 }
 
@@ -194,14 +188,16 @@ void setupObjects()
         objectStat[i] = 1;
     }
 
-    warrior.character = '@';
-    warrior.health = 20;
-    warrior.maxHealth = 20;
-    warrior.locX = 1;
-    warrior.locY = 1;
-    warrior.enemy = 0;
-    warrior.face = EAST;
-    strcpy(warrior.name, "Warrior");
+    constructor();
+
+    __warrior.character = '@';
+    __warrior.health = 20;
+    __warrior.maxHealth = 20;
+    __warrior.locX = 1;
+    __warrior.locY = 1;
+    __warrior.enemy = 0;
+    __warrior.face = EAST;
+    strcpy(__warrior.name, "Warrior");
 
     wall.character = 'W';
     wall.enemy = 0;

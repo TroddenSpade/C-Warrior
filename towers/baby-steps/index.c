@@ -1,5 +1,5 @@
 #include "actions.c"
-#include "player.c"
+#include "warrior.c"
 
 #define NUMBER_OF_LEVELS 6
 #define NUMBER_OF_LEVEL_1_OBJECTS 0

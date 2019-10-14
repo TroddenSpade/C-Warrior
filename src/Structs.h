@@ -24,7 +24,7 @@ typedef struct Object
     enum Face face;
 } Object;
 
-Object warrior, wall, space, stairs;
+Object __warrior, wall, space, stairs;
 
 typedef struct Level
 {
