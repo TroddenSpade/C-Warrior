@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include "Logic.h"
@@ -21,12 +22,11 @@ struct Object *field[10][20];
 int objectStat[100];
 
 #include "Methods.c"
-#include "../towers/list.c"
+#include "../src/Structs.h"
+#include "../towers/index.c"
 #include "../profile/Play.c"
 
 #ifdef _WIN32
-#include <fcntl.h>
-#include <io.h>
 #define HEART L"\u2665"
 #define SCORE L"\u2666"
 #define UP_LEFT L"\u2554"

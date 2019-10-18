@@ -1,20 +1,22 @@
-del ".\main.exe" /s /f /q
+@echo off
 
-if exist .\data\Player.c (
-    echo ".\profile\Play.c  exists"
-) else (
-    echo ".\profile\Play.c  doesn't exist, creating a new Player.c ..."
+IF EXIST ".\main.exe" del ".\main.exe" /s /f /q
+
+IF EXIST ".\profile\Play.c" (
+    ECHO .\profile\Play.c  exists
+) ELSE (
+    echo .\profile\Play.c  doesn't exist, creating a new Player.c ..
     @echo off
     (
     echo void playTurn(^)
     echo {
     echo     // your code goes here
     echo }
-    ) >.\data\Player.c 
+    ) >.\profile\Play.c
 )
 
-gcc main.c .\player\player.c -o main
+gcc ./src/Main.c ./src/Logic.c -o main
 
-REM cls
+cls
 
 .\main
